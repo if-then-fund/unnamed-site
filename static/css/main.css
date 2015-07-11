@@ -1,0 +1,148 @@
+@import url(https://fonts.googleapis.com/css?family=Roboto+Slab:300,800);
+@import url(https://fonts.googleapis.com/css?family=Bitter:400,700);
+
+body {
+    font-family: 'Roboto Slab', serif;
+    font-size: 18px;
+    padding: 0;
+    color: black;
+}
+
+h1 {   
+    font-family: 'Bitter', serif;
+    font-size: 39px !important;
+    font-weight: bold;
+    margin: .25em 0 1em 0;
+    color: #222;
+}
+@media screen and (max-width: 767px) {
+    h1 {
+        margin-top: 0;
+    }
+}
+
+h2 {
+	font-size: 26px;
+    font-weight: bold;
+	margin-bottom: 1em;
+}
+h3 {
+    font-size: 23px;
+    font-weight: bold;
+    margin-bottom: 1em;
+}
+h4 {
+    font-size: 18px;
+    font-weight: bold;
+    margin-top: 1.25em;
+    margin-bottom: .25em;
+}
+
+p, td {
+    font-size: inherit;
+	line-height: 150%;
+}
+
+h1 a, h1 a:hover {
+    color: white;
+    text-decoration: none;
+}
+
+p a {
+	color: #0c66a4;
+	border-bottom: 1px solid #0c66a4; /* accessibility link underline */
+    text-decoration: none !important; /* prevent hover underline */
+}
+
+hr {
+    margin: 2em 0;
+    border-color: #AAA;
+}
+
+.jumbotrony {
+    margin: 2em 0;
+}
+    .jumbotrony p {
+        line-height: 120%;
+    }
+
+h1 span {
+    display: block;
+    margin-top: .25em;
+    font-size: 65%;
+    font-weight: normal;
+}
+
+#so-far {
+    font-size: 34px;
+    font-style: italic;
+    line-height: 125%;
+}
+
+#content-col .img-responsive {
+    margin-top: 4px;
+}
+#content-col h3 {
+    margin-top: 1.75em;
+}
+
+.face {
+}
+
+#pledge-col {
+    margin-top: 40px;
+}
+@media screen and (min-width: 768px) {
+    #pledge-col {
+        margin-top: 0;
+    }
+    #pledge-col > div {
+        margin-left: 15px;
+        border-left: 3px solid #EEE;
+        padding-left: 30px;
+        padding-top: 1em;
+        padding-bottom: 1em;
+    }
+}
+#pledge-col > .panel {
+    border: none;
+    border-radius: 0;
+    background-color: white;
+}
+
+#pledge-form {
+}
+    #pledge-form h3 {
+        font-size: 16px;
+        font-weight: bold;
+        color: #444;
+    }
+    #pledge-form p, #pledge-form td {
+        font-size: 15px;
+        line-height: 130%;
+    }
+    #pledge-form p {
+        margin: 1em 0;
+    }
+    #pledge-form p.small {
+        font-size: 90%;
+        line-height: 125%;
+    }
+    #pledge-form label {
+        font-weight: normal;
+        margin-right: 1em;
+    }
+    #pledge-form table input[type='text'], #pledge-form table input[type='email'] {
+        margin-bottom: 3px;
+        padding: 2px 4px;
+    }
+
+    #pledge-amount-field {
+        max-width: 6em;
+    }
+
+footer {
+    margin: 1em 0 1.75em 0;
+    font-size: 14px;
+    color: #EEE;
+}
