@@ -37,7 +37,7 @@
     <!--[if lt IE 8]><p>Internet Explorer version 8 or any modern web browser is required to use this website, sorry.<![endif]-->
     <!--[if gt IE 7]><!-->
 
-    <div id="giant-map" style="width: 100%; height: 100vw; background-color: white; background-image: url(static/images/giant-map.jpeg);">
+    <div id="giant-map" style="width: 100%; height: 100vw; background-color: white; background-image: url(static/images/giant-map.jpeg); background-repeat: no-repeat;">
 
       <div style="position: absolute; right: 0; bottom: 0; padding: 3px; font-size: 13px; font-family: sans-serif; background-color: rgba(240,240,240,.7); color: #555;">
         © Mapbox and OpenStreetMap
@@ -87,7 +87,7 @@
 
           <div>
 
-            <h3>Why? The District doesn’t have a voice in Congress.</h3>
+            <h3>The District doesn’t have a voice in Congress.</h3>
 
             <div class="row" style="margin-bottom: 1.5em">
               <div class="col-xs-3 col-sm-2"> 
@@ -113,9 +113,9 @@
 
             <h3>Why Pennsylvania’s 8<sup>th</sup>?</h3>
 
-            <p>We chose a district where we have a real chance to shape the outcome of an election. The current congressman isn&rsquo;t seeking reelection, so the seat will be open and is considered a <a href="http://cookpolitical.com/house/charts/race-ratings">toss-up</a>.</p>
+            <p>We chose the closest district where we have a real chance to shape the outcome of an election. The current congressman isn&rsquo;t seeking reelection, so nobody has an incumbency advantage, and the district is considered a <a href="http://cookpolitical.com/house/charts/race-ratings">toss-up</a>. Our money &mdash; if there is enough of it &mdash; will have a real impact on who wins and who loses this election.</p>
 
-            <p>The district is located just northeast of Philadelphia.</p>
+            <p>The district is located just northeast of Philadelphia, which makes it close enough that if we succeed, we&rsquo;ll be able to take a day trip to visit our Representative's local office.</p>
 
             <iframe width="100%" height="300" frameborder="0" scrolling="no" marginheight="0" marginwidth="0" src="https://www.govtrack.us/congress/members/embed/mapframe?state=pa&district=8&bounds=-75.2,40.5,-75.1,40.18&footer=0" style="border: 1px solid #777; margin-top: 1em"></iframe>
 
@@ -141,7 +141,7 @@
 
               <h2>Join us</h2>
 
-              <p>Make a campaign contribution to the Democratic candidate in the PA-08 election.</p>
+              <p>Make a campaign contribution to the Democratic candidate in the 2016 PA-08 election.</p>
 
               <h3>
                 <label for="pledge-amount-field" style="margin: 0; padding: 0; font-size: inherit; font-weight: inherit;">
@@ -258,7 +258,7 @@
 
 	    <h4>How this works &mdash; the details</h4>
 
-      <p>We won&rsquo;t know who the Democratic candidate will be until after Pennsylvania holds its Democratic primary election in mid-2016. Your contribution will be held in escrow until after the primary election by our partner <a href="http://www.democracyengine.com/">Democracy Engine</a>, which has a long track record in helping organizations like ours process donations. In the event that the contributions cannot be made, the contributions will be given instead to the Democratic candidate in  Michigan’s 7<sup>th</sup> congressional district. And failing that, the contributions will be donated to a charity supporting DC statehood.</p>
+      <p>We won&rsquo;t know who the Democratic candidate will be until after Pennsylvania holds its Democratic primary election on April 25, 2016. Your contribution will be processed by  <a href="http://www.democracyengine.com/">Democracy Engine</a>, which has a long track record in helping organizations like ours process donations. In the unlikely event that we can&rsquo;t give your donation to a Democratic candidate in Pennsylvania&rsquo;s 8<sup>th</sup>, the contributions will be given instead to the Democratic candidate in Michigan’s 7th congressional district. And failing that, the contributions will be donated to a charity supporting DC statehood.</p>
 
       <footer>
         &copy; Company 2015
@@ -301,6 +301,14 @@
         <script src="static/js/jquery.payment.js"> </script>
 
         <script>
+        // a nice easing function based on a sigmoid curve
+        var easing_parameters = [6, sigmoid(-6), sigmoid(6)];
+        function sigmoid(t) { return 1/(1+Math.exp(-t)); }
+        function easing(t) {
+          var s = easing_parameters[0];
+          return (sigmoid(t*2*s-s) - easing_parameters[1]) / (easing_parameters[2] - easing_parameters[1]);
+        }
+
         $(function() {
           // Set up form controls.
           $('input.cc-num').payment('formatCardNumber');
@@ -309,36 +317,30 @@
 
           // Set up big map.
           var sz = Math.min($(window).width(), $(window).height()) / 290;
+          var gmsz = 3083; // pixel width of giant map image
 
-          var gmsz = 3083;
-
+          // Size the big map to the viewport.
           $('#giant-map').css({
             height: $(window).height(),
-            backgroundRepeat: 'no-repeat'
           })
 
+          // Prepare the animation and set the map to initial conditions.
           var anim_now = 0;
           var anim_max = 180;
           giant_map_anim(true);
 
+          // For the start button.
           window.start_giant_map_animation = function() {
             if (anim_now != 0) return;
             giant_map_anim();
           }
 
+          // Animation frame.
           function giant_map_anim(init) {
-            function sigmoid_(t) {
-              return 1/(1+Math.exp(-t));
-            }
-            function sigmoid(t) {
-              var s = 6;
-              return (sigmoid_(t*2*s-s) - sigmoid_(-s)) / (sigmoid_(s) - sigmoid_(-s));
-            }
-
-            var t = anim_now/anim_max;    
-            var z = 1 - .7 * Math.sin(sigmoid(anim_now/anim_max) * 1.2*3.14159/2);
-            var bpx = parseInt(-z*sz*(450 + 1350*sigmoid(t)) + $('#giant-map').width()/2);
-            var bpy = parseInt(z*sz*(-2197 + 320 + 1250*sigmoid(t)) + $('#giant-map').height()/2);
+            var t = easing(anim_now/anim_max);    
+            var z = 1 - .7 * Math.sin(t * 1.2*3.14159/2);
+            var bpx = parseInt(-z*sz*(450 + 1350*t) + $('#giant-map').width()/2);
+            var bpy = parseInt(z*sz*(-2197 + 320 + 1250*t) + $('#giant-map').height()/2);
 
             $('#giant-map').css({
               backgroundSize: z * sz * gmsz,
@@ -356,7 +358,7 @@
                   left: $('#giant-map').innerWidth()/2 - h*ar/2.8,
                   top: $('#giant-map').innerHeight()/2 - h/1.9
                 }).fadeIn('slow');
-              setTimeout(function() { smooth_scroll_to($('#content-col')) }, 2500);
+              setTimeout(function() { smooth_scroll_to($('#content-col h1')) }, 2500);
             }
 
             if (init || anim_now >= anim_max) return;
@@ -366,27 +368,27 @@
 
           // Wobbly DC in the lower part.
 
-          fix_dc_position();
-          $('#dc2').fadeIn();
-          start_dc_anim_3();
-
-          function fix_dc_position(animate_callback) {
+          function fix_dc_position() {
             var w = $('#our-new-district').width()*.3;
             var h = w*$('#dc2').height()/$('#dc2').width();
-            $('#dc2')[animate_callback ? 'animate' : 'css']({
+            $('#dc2')['css']({
                 zIndex: 999,
                 width: w,
                 height: h,
                 position: "absolute",
                 top: $('#our-new-district').offset().top + .85*$('#our-new-district').height() - .5*h,
                 left: $('#our-new-district').offset().left + .9*$('#our-new-district').width() - .5*w
-              }, 'slow', animate_callback);
+              });
           }
+          $(window).resize(function() { fix_dc_position(); });
 
+          fix_dc_position();
+          $('#dc2').fadeIn();
+
+          var did_start_dc_anim_3 = false;
           function start_dc_anim_3() {
-            $(window).resize(function() { fix_dc_position(); });
-            $(window).resize();
-
+            if (did_start_dc_anim_3) return;
+            did_start_dc_anim_3 = true;
             var anim_now = 0;
             function dc_anim() {
               $("#dc2").css('transform',
@@ -396,10 +398,15 @@
                 ' scale('+(1 + .1*Math.sin(anim_now/25))+')'
                 );
               anim_now += 1;
-              setTimeout(dc_anim, 20);
+              setTimeout(dc_anim, 30);
             }
             dc_anim();
           }
+
+          // Wait for first scroll to start the wobbly DC animation
+          // because we don't want to do this while also animating the
+          // giant map ---- that's too much on mobile.
+          $(window).on('scroll', start_dc_anim_3);
         })
         </script>
 
